@@ -304,3 +304,9 @@ backup/
 
 # Ollama models (if stored in project directory)
 ollama_models/
+
+
+# dockerfile
+dockerfile
+Dockerfile
+
