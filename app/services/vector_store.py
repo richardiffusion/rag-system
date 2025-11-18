@@ -1,0 +1,2 @@
+# 重定向到ChromaDB向量存储
+from app.services.chroma_vector_store import chroma_vector_store as vector_store
