@@ -108,21 +108,24 @@ class EmbeddingService:
                 return simple_embedding_service.get_embedding(text)
     
     def get_embeddings_batch(self, texts: List[str]) -> List[List[float]]:
-        """批量获取向量嵌入"""
         if self.use_simple or self.model is None:
             return simple_embedding_service.get_embeddings_batch(texts)
         else:
             try:
                 embeddings = self.model.encode(texts)
-                embeddings = [emb / np.linalg.norm(emb) for emb in embeddings]
-                return embeddings.tolist()
+                # 修复：embeddings 已经是列表，不需要调用 tolist()
+                normalized_embeddings = []
+                for emb in embeddings:
+                    normalized_emb = emb / np.linalg.norm(emb)
+                    normalized_embeddings.append(normalized_emb.tolist())
+                return normalized_embeddings
             except Exception as e:
                 logger.error(f"sentence-transformers 批量嵌入失败，回退到简单版本: {e}")
                 return simple_embedding_service.get_embeddings_batch(texts)
 
 # 临时解决方案：强制使用简单嵌入服务
-# embedding_service = EmbeddingService()
+embedding_service = EmbeddingService()
 
-from app.services.simple_embedding_service import simple_embedding_service
-embedding_service = simple_embedding_service
-logger.warning("使用简单嵌入服务（临时解决方案）")
+# from app.services.simple_embedding_service import simple_embedding_service
+# embedding_service = simple_embedding_service
+# logger.warning("使用简单嵌入服务（临时解决方案）")

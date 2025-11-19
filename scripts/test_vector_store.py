@@ -20,7 +20,7 @@ def test_vector_store():
         
         # 测试插入
         test_doc = DocumentCreate(
-            content="这是一个测试文档，用于验证向量存储功能。",
+            content="这是一个测试文档，用于验证向量存储功能。RAG系统使用ChromaDB进行向量检索。",
             metadata={"source": "test", "type": "test_document"}
         )
         
@@ -32,14 +32,16 @@ def test_vector_store():
         doc_id = vector_store.insert_document(test_doc, embedding)
         print(f"✅ 文档插入成功: {doc_id}")
         
-        # 测试搜索
-        results = vector_store.similarity_search(embedding, top_k=3)
+        # 测试搜索 - 使用相同内容的查询
+        query_embedding = embedding_service.get_embedding("测试向量存储功能 ChromaDB")
+        results = vector_store.similarity_search(query_embedding, top_k=3)
         print(f"✅ 搜索测试成功，找到 {len(results)} 个文档")
         
         if results:
             for i, doc in enumerate(results):
                 print(f"  文档 {i+1}: {doc.content[:50]}...")
         
+        # 清理测试数据（可选）
         print("✅ 向量存储测试完成！")
         
     except Exception as e:

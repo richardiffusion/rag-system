@@ -168,8 +168,9 @@ data/processed/
 data/raw/*.pdf
 data/raw/*.docx
 data/raw/*.txt
+data/temp/
 # 但保留目录结构
-!data/raw/.gitkeep
+!data/.gitkeep
 
 # Model files (large model files should not be committed)
 models/

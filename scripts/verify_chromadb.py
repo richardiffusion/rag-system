@@ -22,18 +22,25 @@ def verify_chromadb():
     try:
         print("验证ChromaDB功能...")
         
-        # 测试插入文档
-        test_doc = DocumentCreate(
-            content="这是一个测试文档，用于验证ChromaDB向量搜索功能。人工智能是计算机科学的重要分支。",
-            metadata={"source": "test", "type": "verification"}
-        )
+        # 检查文档数量
+        doc_count = vector_store.get_document_count()
+        print(f"当前文档数量: {doc_count}")
         
-        # 生成嵌入
-        embedding = embedding_service.get_embedding(test_doc.content)
-        
-        # 插入文档
-        doc_id = vector_store.insert_document(test_doc, embedding)
-        print(f"✅ 文档插入成功，ID: {doc_id}")
+        if doc_count == 0:
+            print("⚠️  没有文档，进行插入测试...")
+            
+            # 测试插入文档
+            test_doc = DocumentCreate(
+                content="这是一个测试文档，用于验证ChromaDB向量搜索功能。人工智能是计算机科学的重要分支。",
+                metadata={"source": "test", "type": "verification"}
+            )
+            
+            # 生成嵌入
+            embedding = embedding_service.get_embedding(test_doc.content)
+            
+            # 插入文档
+            doc_id = vector_store.insert_document(test_doc, embedding)
+            print(f"✅ 文档插入成功，ID: {doc_id}")
         
         # 测试搜索
         query_text = "人工智能"
@@ -47,7 +54,6 @@ def verify_chromadb():
         for i, doc in enumerate(results):
             print(f"文档 {i+1}: {doc.content[:50]}...")
         
-        # 清理测试数据
         print("✅ ChromaDB验证完成！")
         
     except Exception as e:

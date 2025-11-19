@@ -12,7 +12,7 @@ import time
 def run_command(cmd):
     """运行命令行命令"""
     try:
-        result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+        result = subprocess.run(cmd, shell=True, capture_output=True, text=True, encoding='utf-8', errors='ignore')
         return result.returncode, result.stdout, result.stderr
     except Exception as e:
         return -1, "", str(e)
@@ -24,9 +24,9 @@ def diagnose_ollama():
     # 1. 检查Ollama进程
     print("\n1. 检查Ollama进程...")
     if sys.platform == "win32":
-        returncode, stdout, stderr = run_command("tasklist | findstr ollama")
+        returncode, stdout, stderr = run_command('tasklist | findstr "ollama"')
     else:
-        returncode, stdout, stderr = run_command("ps aux | grep ollama")
+        returncode, stdout, stderr = run_command("ps aux | grep ollama | grep -v grep")
     
     if returncode == 0 and "ollama" in stdout:
         print("✅ Ollama进程正在运行")
@@ -61,7 +61,7 @@ def diagnose_ollama():
         # 测试模型生成
         test_payload = {
             "model": "llama3.1",
-            "prompt": "请回复'OK'表示你工作正常。",
+            "prompt": "Say OK",
             "stream": False
         }
         response = requests.post(
@@ -84,8 +84,8 @@ def diagnose_ollama():
             if returncode == 0:
                 print("✅ 模型拉取成功，请重新测试")
                 # 等待模型加载
-                time.sleep(5)
-                return diagnose_ollama()  # 重新诊断
+                time.sleep(10)
+                return diagnose_ollama()
             else:
                 print("❌ 模型拉取失败")
                 print(f"   错误: {stderr}")

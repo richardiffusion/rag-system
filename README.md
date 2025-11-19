@@ -147,9 +147,17 @@ rag-system/
 │   ├── routes/            # API路由
 │   └── utils/             # 工具函数
 ├── scripts/               # 实用脚本
-│   ├── load_documents.py  # 文档加载
-│   ├── test_full_system.py # 系统测试
-│   └── check_system.py    # 系统检查
+│   ├── clear_cache.py              # 清除缓存
+│   ├── show_ollama_models.py       # 查看Ollama模型列表
+│   ├── verify_ollama.py            # Ollama模型检查
+│   ├── check_supported_formats.py  # 文档格式检查
+│   ├── init_database.py            # 初始化数据库
+│   ├── load_documents.py           # 文档加载
+│   ├── verify_chromadb.py          # ChromaDB验证
+│   ├── warmup_model.py             # 模型预热
+│   ├── performance_test.py         # 性能测试
+│   ├── check_documents.py          # 文档检查
+│   └── test_full_system.py         # 完整测试
 ├── data/                  # 数据目录
 │   └── raw/              # 原始文档存储
 ├── chroma_db/            # ChromaDB向量数据库
