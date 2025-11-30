@@ -1,4 +1,5 @@
 # 此为自用学习系统，此项目非稳定版本，慎用！
+# This is for personal study purpose. The current master branch might not be stable!
 
 
 # RAG智能问答系统
